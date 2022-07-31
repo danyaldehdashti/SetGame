@@ -57,13 +57,9 @@ public class PlayerHandler : NetworkBehaviour
 
     private void Awake()
     {
-        if (!isLocalPlayer){ return;}
-
         DontDestroyOnLoad(gameObject);
 
-        _playerUiHandler.GetComponent<PlayerUiHandler>();
         
-        Debug.Log(_playerUiHandler);
     }
 
     private void Start()
@@ -80,6 +76,9 @@ public class PlayerHandler : NetworkBehaviour
         if (!isLocalPlayer){ return;}
         
         SpawnLobbyUi();
+        
+        _playerUiHandler = GetComponent<PlayerUiHandler>();
+
     }
 
     [Client]
