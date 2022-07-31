@@ -41,8 +41,12 @@ public class SetNetworkManager : NetworkManager
         playersId.Remove(playerHandler.inGameId);
 
         inGameIdToNetworkConnections.Remove(playerHandler.inGameId);
+
+        PlayerData playerData = new PlayerData();
+
+        playerData.inGameId = playerHandler.inGameId;
         
-        _lobby.players.RemoveAt(_uniqueId);
+        _lobby.players.Remove(playerData);
         
         base.OnServerDisconnect(conn);
     }
@@ -57,7 +61,7 @@ public class SetNetworkManager : NetworkManager
         }
         else if(SceneManager.GetActiveScene().name.StartsWith(_gameScene))
         {
-            SpawnLobby();
+            
         }
     }
     
@@ -69,9 +73,7 @@ public class SetNetworkManager : NetworkManager
 
         for (int i = 0; i < inGameIdToNetworkConnections.Count; i++)
         {
-           PlayerHandler player = inGameIdToNetworkConnections[playersId[i]].identity.GetComponent<PlayerHandler>();
-           
-           player.SetGameInProgress();
+            inGameIdToNetworkConnections[playersId[i]].identity.GetComponent<PlayerHandler>().SetGameInProgress(true);
         }
     }
 

@@ -17,11 +17,15 @@ public class PlayerHandler : NetworkBehaviour
 
     [SyncVar(hook = nameof(IsPartyOwnerHook))]
     public bool isPartyOwner;
-    
+
+    [SyncVar(hook = nameof(IsGameInProgressHook))]
+    public bool isGameInProgress;
     
     private LobbyUi _lobbyUi;
 
     private PlayerUiHandler _playerUiHandler;
+
+    private GameSceneBulider _gameSceneBulider;
     
 
     #region Server
@@ -37,13 +41,13 @@ public class PlayerHandler : NetworkBehaviour
     {
         isPartyOwner = state;
     }
-
+    
     [Server]
-    public void SetGameInProgress()
+    public void SetGameInProgress(bool state)
     {
-        _playerUiHandler.SpawnCanvas();
+        isGameInProgress = state;
     }
-
+    
     [Command]
     private void CmdStartGame()
     {
@@ -58,8 +62,6 @@ public class PlayerHandler : NetworkBehaviour
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
-
-        
     }
 
     private void Start()
@@ -78,7 +80,8 @@ public class PlayerHandler : NetworkBehaviour
         SpawnLobbyUi();
         
         _playerUiHandler = GetComponent<PlayerUiHandler>();
-
+        
+        Debug.Log(_playerUiHandler);
     }
 
     [Client]
@@ -92,7 +95,7 @@ public class PlayerHandler : NetworkBehaviour
         
         lobby.GetLobbyUi();
     }
-
+    
     #endregion
     
 
@@ -103,6 +106,13 @@ public class PlayerHandler : NetworkBehaviour
         if (!isLocalPlayer){ return;}
 
         _lobbyUi.startButton.gameObject.SetActive(newValue);
+    }
+
+    private void IsGameInProgressHook(bool oldValue, bool newValue)
+    {
+        if (!isLocalPlayer){ return;}
+
+        _playerUiHandler.SpawnCanvas();
     }
 
     #endregion
