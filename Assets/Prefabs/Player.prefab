@@ -68,6 +68,7 @@ MonoBehaviour:
   lobbyUi: {fileID: 3802251722639612591, guid: 542b05990909ce846aab31bc822e2857, type: 3}
   inGameId: 0
   isPartyOwner: 0
+  isGameInProgress: 0
 --- !u!114 &3952197163720721528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93,4 +94,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1892764fe7703774f86f70dcd0ca0924, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnPoints: {fileID: 696739434446934792, guid: 7550ec4befbac4f45bdcfe79050e7169, type: 3}
   deckCardSpawnPoint: {x: -7.3, y: 3, z: 0}
+  cardPrefab: {fileID: 2454953045264568943, guid: 2a50a9f81fe6290428e66548c76fa1cd, type: 3}
+  deckCardPrefab: {fileID: 2712619594110964349, guid: 054fa7971023b5e41b6d9b4f6a5ec020, type: 3}
+  background: {fileID: 28575337522935528, guid: 92493082b0203204ba401d590f696518, type: 3}

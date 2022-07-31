@@ -25,7 +25,7 @@ public class PlayerHandler : NetworkBehaviour
 
     private PlayerUiHandler _playerUiHandler;
 
-    private GameSceneBulider _gameSceneBulider;
+    private GameSceneBuilder _gameSceneBuilder;
     
 
     #region Server
@@ -80,8 +80,8 @@ public class PlayerHandler : NetworkBehaviour
         SpawnLobbyUi();
         
         _playerUiHandler = GetComponent<PlayerUiHandler>();
-        
-        Debug.Log(_playerUiHandler);
+
+        _gameSceneBuilder = GetComponent<GameSceneBuilder>();
     }
 
     [Client]
@@ -113,9 +113,10 @@ public class PlayerHandler : NetworkBehaviour
         if (!isLocalPlayer){ return;}
 
         _playerUiHandler.SpawnCanvas();
+        
+        _gameSceneBuilder.BuildGameScene();
     }
 
     #endregion
-    
     
 }
