@@ -14,6 +14,8 @@ public class SetNetworkManager : NetworkManager
 
     private Lobby _lobby;
 
+    private CardShuffle _cardShuffle;
+
     private int _uniqueId = 0;
     
     private string _lobbyScene = "Lobby";
@@ -25,6 +27,8 @@ public class SetNetworkManager : NetworkManager
 
     
     [SerializeField] private Lobby lobbyPrefab;
+
+    [SerializeField] private CardShuffle cardShufflePrefab;
     
 
     public override void OnServerAddPlayer(NetworkConnection conn)
@@ -61,7 +65,7 @@ public class SetNetworkManager : NetworkManager
         }
         else if(SceneManager.GetActiveScene().name.StartsWith(_gameScene))
         {
-            
+            SpawnCardShuffle();
         }
     }
     
@@ -113,6 +117,15 @@ public class SetNetworkManager : NetworkManager
         _lobby = lobbyInstance.GetComponent<Lobby>();
         
         NetworkServer.Spawn(lobbyInstance);
+    }
+    
+    private void SpawnCardShuffle()
+    {
+        GameObject cardShuffleInstance = Instantiate(cardShufflePrefab.gameObject);
+
+        _cardShuffle = cardShuffleInstance.GetComponent<CardShuffle>();
+        
+        NetworkServer.Spawn(cardShuffleInstance);
     }
     
 }

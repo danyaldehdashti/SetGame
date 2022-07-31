@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3df054501b3fd6e4baf65477b5cd6d66, type: 3}
   m_Name: Card 6
   m_EditorClassIdentifier: 
-  sprite: {fileID: 0}
-  color: 0
+  sprite: {fileID: 21300000, guid: 51949696b107dd74fa8ca75a128545b0, type: 3}
+  color: 1
   geometricShapes: 0
   number: 0
-  model: 0
+  model: 2

@@ -20,12 +20,19 @@ public class PlayerHandler : NetworkBehaviour
 
     [SyncVar(hook = nameof(IsGameInProgressHook))]
     public bool isGameInProgress;
-    
+
+
+
+    public List<int> _cardOnBoard = new List<int>();
+
+
     private LobbyUi _lobbyUi;
 
     private PlayerUiHandler _playerUiHandler;
 
     private GameSceneBuilder _gameSceneBuilder;
+
+    private CardShuffle _cardShuffle;
     
 
     #region Server
@@ -81,7 +88,7 @@ public class PlayerHandler : NetworkBehaviour
         
         _playerUiHandler = GetComponent<PlayerUiHandler>();
 
-        _gameSceneBuilder = GetComponent<GameSceneBuilder>();
+        _gameSceneBuilder = FindObjectOfType<GameSceneBuilder>();
     }
 
     [Client]
@@ -95,6 +102,34 @@ public class PlayerHandler : NetworkBehaviour
         
         lobby.GetLobbyUi();
     }
+
+    [Client]
+    private void GameInProgress()
+    {
+        _playerUiHandler.SpawnCanvas();
+        
+        _gameSceneBuilder.BuildGameScene();
+        
+        SetStarterValue();
+    }
+
+    [Client]
+    private void SetStarterValue()
+    {
+        int countOfCardOnBoard = 12;
+        for (int i = 0; i < countOfCardOnBoard; i++)
+        {
+            _cardOnBoard.Add(i);
+        }
+        
+        for (int i = 0; i < _cardShuffle.cardsInBoard.Count; i++)
+        {
+            _cardOnBoard[i] = _cardShuffle.cardsInBoard[i];
+        }
+        
+        _gameSceneBuilder.SetStarterDeck(_cardOnBoard);
+    }
+    
     
     #endregion
     
@@ -111,10 +146,10 @@ public class PlayerHandler : NetworkBehaviour
     private void IsGameInProgressHook(bool oldValue, bool newValue)
     {
         if (!isLocalPlayer){ return;}
-
-        _playerUiHandler.SpawnCanvas();
         
-        _gameSceneBuilder.BuildGameScene();
+        _cardShuffle = FindObjectOfType<CardShuffle>();
+
+        GameInProgress();
     }
 
     #endregion

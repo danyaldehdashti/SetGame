@@ -8,8 +8,6 @@ public class GameSceneBuilder : MonoBehaviour
     [Header("Dependency")]
     
     [SerializeField] private GameObject spawnPoints;
-    
-    [SerializeField] private Vector3 deckCardSpawnPoint;
 
     [SerializeField] private GameObject cardPrefab;
 
@@ -17,14 +15,19 @@ public class GameSceneBuilder : MonoBehaviour
 
     [SerializeField] private GameObject background;
     
+    [SerializeField] private Vector3 deckCardSpawnPoint;
+
+    [SerializeField] private List<Card> allCards;
+
+
     private List<Transform> _boardSpawnPoint = new List<Transform>();
 
-    private List<CardHolder> _cardsInBoard = new List<CardHolder>();
+    public List<CardHolder> _cardsInBoard = new List<CardHolder>();
 
 
     private void GetSpawnPositions()
     {
-        List<CardHolder> cards = new List<CardHolder>(CardHolder.allCards);
+        List<CardSpawnPoint> cards = new List<CardSpawnPoint>(CardSpawnPoint.allCards);
 
         foreach (var card in cards)
         {
@@ -32,6 +35,18 @@ public class GameSceneBuilder : MonoBehaviour
         }
     }
 
+    private void BuildBoard()
+    {
+        for (int i = 0; i < _boardSpawnPoint.Count; i++)
+        {
+            GameObject newCard = Instantiate(cardPrefab,gameObject.transform,this);
+
+            newCard.transform.position = _boardSpawnPoint[i].position;
+            
+            _cardsInBoard.Add(newCard.GetComponent<CardHolder>());
+        }
+    }
+    
     public void BuildGameScene()
     {
         Instantiate(spawnPoints,gameObject.transform,this);
@@ -47,16 +62,15 @@ public class GameSceneBuilder : MonoBehaviour
         BuildBoard();
     }
 
-    private void BuildBoard()
+    public void SetStarterDeck( List<int> cardOnboardId)
     {
-        Debug.Log(_boardSpawnPoint.Count);
-        for (int i = 0; i < _boardSpawnPoint.Count; i++)
+        for (int i = 0; i < _cardsInBoard.Count; i++)
         {
-            GameObject newCard = Instantiate(cardPrefab,gameObject.transform,this);
-
-            newCard.transform.position = _boardSpawnPoint[i].position;
+            _cardsInBoard[i].card = allCards[cardOnboardId[i]];
             
-            _cardsInBoard.Add(newCard.GetComponent<CardHolder>());
+            SpriteRenderer cardSprite = _cardsInBoard[i].GetComponent<SpriteRenderer>();
+
+            cardSprite.sprite = allCards[cardOnboardId[i]].sprite;
         }
     }
 }
