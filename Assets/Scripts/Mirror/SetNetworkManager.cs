@@ -74,7 +74,7 @@ public class SetNetworkManager : NetworkManager
         _isGameInProgress = true;
         
         ServerChangeScene(_gameScene);
-
+        
         for (int i = 0; i < inGameIdToNetworkConnections.Count; i++)
         {
             inGameIdToNetworkConnections[playersId[i]].identity.GetComponent<PlayerHandler>().SetGameInProgress(true);

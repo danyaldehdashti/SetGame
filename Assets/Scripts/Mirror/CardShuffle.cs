@@ -11,24 +11,16 @@ public class CardShuffle : NetworkBehaviour
 
     private List<int> _allCardsId = new List<int>();
 
-    public SyncList<int> cardsInBoard = new SyncList<int>();
+    public List<int> cardsInBoard = new List<int>();
 
-
-    public override void OnStartServer()
-    {
-        base.OnStartServer();
-        
-        AddStartValueToLists();
-    }
-
-
+    
     public void AddStartValueToLists()
     {
         for (int i = 0; i < _numberAllCard; i++)
         {
             _allCardsId.Add(i);
         }
-
+        
         for (int i = 0; i < _numberOfCardOnBoard; i++)
         {
             int randomCard = Random.Range(0, _allCardsId.Count);
@@ -38,4 +30,25 @@ public class CardShuffle : NetworkBehaviour
             _allCardsId.Remove(randomCard);
         }
     }
+
+    public void RemoveCard(List<int> cardRemoved)
+    {
+        for (int i = 0; i < cardRemoved.Count; i++)
+        {
+            cardsInBoard.RemoveAt(cardRemoved[i]);
+        }
+    }
+    
+    private void AddNewCardOnBoard()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            int randomCard = Random.Range(0, _allCardsId.Count);
+            
+            cardsInBoard.Add(randomCard);
+
+            _allCardsId.Remove(randomCard);
+        }
+    }
+    
 }

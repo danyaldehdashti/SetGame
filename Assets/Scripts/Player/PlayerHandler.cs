@@ -55,6 +55,7 @@ public class PlayerHandler : NetworkBehaviour
         isGameInProgress = state;
     }
     
+    
     [Command]
     private void CmdStartGame()
     {
@@ -89,8 +90,9 @@ public class PlayerHandler : NetworkBehaviour
         _playerUiHandler = GetComponent<PlayerUiHandler>();
 
         _gameSceneBuilder = FindObjectOfType<GameSceneBuilder>();
+        
     }
-
+    
     [Client]
     private void SpawnLobbyUi()
     {
@@ -111,6 +113,7 @@ public class PlayerHandler : NetworkBehaviour
         _gameSceneBuilder.BuildGameScene();
         
         SetStarterValue();
+        
     }
 
     [Client]
@@ -129,7 +132,17 @@ public class PlayerHandler : NetworkBehaviour
         
         _gameSceneBuilder.SetStarterDeck(_cardOnBoard);
     }
-    
+
+    [Client]
+    private void UpdateBoard()
+    {
+        for (int i = 0; i < _cardShuffle.cardsInBoard.Count; i++)
+        {
+            _cardOnBoard[i] = _cardShuffle.cardsInBoard[i];
+        }
+        
+        _gameSceneBuilder.SetStarterDeck(_cardOnBoard);
+    }
     
     #endregion
     
@@ -149,7 +162,7 @@ public class PlayerHandler : NetworkBehaviour
         
         _cardShuffle = FindObjectOfType<CardShuffle>();
 
-        GameInProgress();
+        //GameInProgress();
     }
 
     #endregion
