@@ -18,7 +18,9 @@ public class GameSceneBuilder : MonoBehaviour
     [SerializeField] private GameObject background;
     
     private List<Transform> _boardSpawnPoint = new List<Transform>();
-    
+
+    private List<CardHolder> _cardsInBoard = new List<CardHolder>();
+
 
     private void GetSpawnPositions()
     {
@@ -53,6 +55,8 @@ public class GameSceneBuilder : MonoBehaviour
             GameObject newCard = Instantiate(cardPrefab,gameObject.transform,this);
 
             newCard.transform.position = _boardSpawnPoint[i].position;
+            
+            _cardsInBoard.Add(newCard.GetComponent<CardHolder>());
         }
     }
 }
