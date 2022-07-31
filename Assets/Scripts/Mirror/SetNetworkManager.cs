@@ -6,22 +6,25 @@ using UnityEngine.SceneManagement;
 
 public class SetNetworkManager : NetworkManager
 {
-    #region Private_Varibels
     
-    private List<NetworkConnection> playersList = new List<NetworkConnection>();
+    public List<int> playersId = new List<int>();
 
-    private Dictionary<int, NetworkConnection> playersDictionary = new Dictionary<int, NetworkConnection>();
+    public Dictionary<int, NetworkConnection> inGameIdToNetworkConnections = new Dictionary<int, NetworkConnection>();
+    
 
     private Lobby _lobby;
 
-    private int _numberOfPlayersInRoom = 0;
+    private int _uniqueId = 0;
     
     private string _lobbyScene = "Lobby";
     
-    #endregion
+    private string _gameScene = "Game";
+    
+    private bool _isGameInProgress = false;
+    
 
     
-    [SerializeField] private GameObject lobbyPrefab;
+    [SerializeField] private Lobby lobbyPrefab;
     
 
     public override void OnServerAddPlayer(NetworkConnection conn)
@@ -35,13 +38,11 @@ public class SetNetworkManager : NetworkManager
     {
         PlayerHandler playerHandler = conn.identity.GetComponent<PlayerHandler>();
 
-        playersList.Remove(conn);
+        playersId.Remove(playerHandler.inGameId);
 
-        playersDictionary.Remove(playerHandler.inGameId);
-
-        _numberOfPlayersInRoom--;
-
-        _lobby.players.RemoveAt(_numberOfPlayersInRoom);
+        inGameIdToNetworkConnections.Remove(playerHandler.inGameId);
+        
+        _lobby.players.RemoveAt(_uniqueId);
         
         base.OnServerDisconnect(conn);
     }
@@ -49,16 +50,29 @@ public class SetNetworkManager : NetworkManager
     public override void OnServerSceneChanged(string sceneName)
     {
         base.OnServerSceneChanged(sceneName);
-
-        if (SceneManager.GetActiveScene().name.StartsWith(_lobbyScene));
+        
+        if (SceneManager.GetActiveScene().name.StartsWith(_lobbyScene))
+        {
+            SpawnLobby();
+        }
+        else if(SceneManager.GetActiveScene().name.StartsWith(_gameScene))
         {
             SpawnLobby();
         }
     }
-
+    
     public void StartGame()
     {
+        _isGameInProgress = true;
         
+        ServerChangeScene(_gameScene);
+
+        for (int i = 0; i < inGameIdToNetworkConnections.Count; i++)
+        {
+           PlayerHandler player = inGameIdToNetworkConnections[playersId[i]].identity.GetComponent<PlayerHandler>();
+           
+           player.SetGameInProgress();
+        }
     }
 
     private void AddNewPlayer(NetworkConnection connection)
@@ -67,32 +81,32 @@ public class SetNetworkManager : NetworkManager
         
         playerHandler.SetPlayerId(GetNewPlayerId());
         
-        playersList.Add(connection);
+        playersId.Add(playerHandler.inGameId);
         
-        playersDictionary.Add(playerHandler.inGameId,connection);
+        inGameIdToNetworkConnections.Add(playerHandler.inGameId,connection);
 
-        if (playersList.Count == 1)
+        if (playersId.Count == 1)
         {
             playerHandler.SetIsPartyOwner(true);
         }
 
-        PlayerDeta playerDeta = new PlayerDeta();
+        PlayerData playerData = new PlayerData();
 
-        playerDeta.inGameId = playerHandler.inGameId;
+        playerData.inGameId = playerHandler.inGameId;
         
-        _lobby.players.Add(playerDeta);
+        _lobby.players.Add(playerData);
     }
 
     private int GetNewPlayerId()
     {
-        _numberOfPlayersInRoom++;
+        _uniqueId++;
 
-        return _numberOfPlayersInRoom;
+        return _uniqueId;
     }
 
     private void SpawnLobby()
     {
-        GameObject lobbyInstance = Instantiate(lobbyPrefab);
+        GameObject lobbyInstance = Instantiate(lobbyPrefab.gameObject);
 
         _lobby = lobbyInstance.GetComponent<Lobby>();
         

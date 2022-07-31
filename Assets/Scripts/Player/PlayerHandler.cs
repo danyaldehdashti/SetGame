@@ -3,27 +3,29 @@ using System.Collections;
 using System.Collections.Generic;
 using Mirror;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerHandler : NetworkBehaviour
 {
-    #region SyncVars
+    [Header("Dependency")]
 
+    [SerializeField] private LobbyUi lobbyUi;
+    
+    
     [SyncVar]
     public int inGameId = 0;
 
     [SyncVar(hook = nameof(IsPartyOwnerHook))]
     public bool isPartyOwner;
-
-    #endregion
-
-
-    [SerializeField] private GameObject lobbyUi;
-
+    
+    
     private LobbyUi _lobbyUi;
 
+    private PlayerUiHandler _playerUiHandler;
+    
 
     #region Server
-    
+
     [Server]
     public void SetPlayerId(int id)
     {
@@ -35,11 +37,41 @@ public class PlayerHandler : NetworkBehaviour
     {
         isPartyOwner = state;
     }
+
+    [Server]
+    public void SetGameInProgress()
+    {
+        _playerUiHandler.SpawnCanvas();
+    }
+
+    [Command]
+    private void CmdStartGame()
+    {
+        ((SetNetworkManager) NetworkManager.singleton).StartGame();
+    }
     
     #endregion
 
 
     #region Client
+
+    private void Awake()
+    {
+        if (!isLocalPlayer){ return;}
+
+        DontDestroyOnLoad(gameObject);
+
+        _playerUiHandler.GetComponent<PlayerUiHandler>();
+        
+        Debug.Log(_playerUiHandler);
+    }
+
+    private void Start()
+    {
+        if (!isLocalPlayer){ return;}
+
+        _lobbyUi.startButton.onClick.AddListener(CmdStartGame);
+    }
 
     public override void OnStartClient()
     {
@@ -53,22 +85,28 @@ public class PlayerHandler : NetworkBehaviour
     [Client]
     private void SpawnLobbyUi()
     {
-        GameObject lobbyUiInstance =  Instantiate(lobbyUi);
+        GameObject lobbyUiInstance =  Instantiate(lobbyUi.gameObject);
 
         _lobbyUi = lobbyUiInstance.GetComponent<LobbyUi>();
 
         Lobby lobby = FindObjectOfType<Lobby>();
         
         lobby.GetLobbyUi();
-        
     }
+
+    #endregion
     
+
+    #region Hooks
+
+    private void IsPartyOwnerHook(bool oldValue, bool newValue)
+    {
+        if (!isLocalPlayer){ return;}
+
+        _lobbyUi.startButton.gameObject.SetActive(newValue);
+    }
 
     #endregion
     
     
-    private void IsPartyOwnerHook(bool oldValue, bool newValue)
-    {
-        _lobbyUi.startButton.gameObject.SetActive(newValue);
-    }
 }

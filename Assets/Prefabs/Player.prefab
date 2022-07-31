@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 1014789973298213742}
   - component: {fileID: 1014789973298213741}
   - component: {fileID: 1014789973298213740}
+  - component: {fileID: 3952197163720721528}
+  - component: {fileID: 1274971184}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -63,6 +65,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  lobbyUi: {fileID: 3802251722639612591, guid: 542b05990909ce846aab31bc822e2857, type: 3}
   inGameId: 0
   isPartyOwner: 0
-  lobbyUi: {fileID: 3802251722639612589, guid: 542b05990909ce846aab31bc822e2857, type: 3}
+--- !u!114 &3952197163720721528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1014789973298213747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3009be6f1d9c2148995d7db9ce628ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCanvas: {fileID: 1885488911098902609, guid: 25630ac4db274bd4db8b352efabc5885, type: 3}
+--- !u!114 &1274971184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1014789973298213747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1892764fe7703774f86f70dcd0ca0924, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deckCardSpawnPoint: {x: -7.3, y: 3, z: 0}
