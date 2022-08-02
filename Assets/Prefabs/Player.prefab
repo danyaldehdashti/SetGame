@@ -11,8 +11,10 @@ GameObject:
   - component: {fileID: 1014789973298213742}
   - component: {fileID: 1014789973298213741}
   - component: {fileID: 1014789973298213740}
+  - component: {fileID: 2419665481943021778}
   - component: {fileID: 3952197163720721528}
   - component: {fileID: 1274971184}
+  - component: {fileID: 8550831641114052866}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -68,8 +70,23 @@ MonoBehaviour:
   lobbyUi: {fileID: 3802251722639612591, guid: 542b05990909ce846aab31bc822e2857, type: 3}
   inGameId: 0
   isPartyOwner: 0
+  cardOnBoard: 
+--- !u!114 &2419665481943021778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1014789973298213747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b581d9658091e243bc37ffb06ca95dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  numberOfBullet: 0
   isGameInProgress: 0
-  _cardOnBoard: 
 --- !u!114 &3952197163720721528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100,6 +117,7 @@ MonoBehaviour:
   deckCardPrefab: {fileID: 2712619594110964349, guid: 054fa7971023b5e41b6d9b4f6a5ec020, type: 3}
   background: {fileID: 28575337522935528, guid: 92493082b0203204ba401d590f696518, type: 3}
   deckCardSpawnPoint: {x: -7.3, y: 3, z: 0}
+  playerDataPos: {x: 0, y: 4, z: 0}
   allCards:
   - {fileID: 11400000, guid: 8c652f885f8a4be4c9cdee1cca0d240a, type: 2}
   - {fileID: 11400000, guid: 912baa20411a850428aafb8cc645fd3e, type: 2}
@@ -182,3 +200,20 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8c1a2e98291062e47b2eebfa9d84acc0, type: 2}
   - {fileID: 11400000, guid: 386fc84c114293e4aa5656baa7038e0a, type: 2}
   - {fileID: 11400000, guid: cae0d39ab8f7aed459e1aacdd557d8a9, type: 2}
+  removedTimeLine: 0.15
+  addTimeLine: 0.15
+  cardsInBoard: []
+--- !u!114 &8550831641114052866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1014789973298213747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f964fcba039ac4cb98444cde784570, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1

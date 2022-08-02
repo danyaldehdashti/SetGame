@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class CardSpawnPoint : MonoBehaviour,IStaticable
 {
-
     public static readonly List<CardSpawnPoint> allCards = new List<CardSpawnPoint>();
+
+    public bool inUse;
     public void Awake()
     {
         allCards.Add(this);

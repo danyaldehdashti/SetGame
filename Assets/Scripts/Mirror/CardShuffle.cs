@@ -25,30 +25,32 @@ public class CardShuffle : NetworkBehaviour
         {
             int randomCard = Random.Range(0, _allCardsId.Count);
             
-            cardsInBoard.Add(randomCard);
-
-            _allCardsId.Remove(randomCard);
+            cardsInBoard.Add(_allCardsId[randomCard]);
+            
+            _allCardsId.RemoveAt(randomCard);
         }
     }
 
-    public void RemoveCard(List<int> cardRemoved)
+    public List<int> RemoveAndAddItem(List<int> oldItems)
     {
-        for (int i = 0; i < cardRemoved.Count; i++)
+        List<int> newItems = new List<int>();
+
+        foreach (var item in oldItems)
         {
-            cardsInBoard.RemoveAt(cardRemoved[i]);
+            cardsInBoard.Remove(item);
         }
-    }
-    
-    private void AddNewCardOnBoard()
-    {
+
         for (int i = 0; i < 3; i++)
         {
             int randomCard = Random.Range(0, _allCardsId.Count);
             
-            cardsInBoard.Add(randomCard);
+            cardsInBoard.Add(_allCardsId[randomCard]);
+            
+            _allCardsId.RemoveAt(randomCard);
 
-            _allCardsId.Remove(randomCard);
+            newItems.Add(_allCardsId[randomCard]);
         }
+
+        return newItems;
     }
-    
 }

@@ -77,7 +77,7 @@ public class SetNetworkManager : NetworkManager
         
         for (int i = 0; i < inGameIdToNetworkConnections.Count; i++)
         {
-            inGameIdToNetworkConnections[playersId[i]].identity.GetComponent<PlayerHandler>().SetGameInProgress(true);
+            inGameIdToNetworkConnections[playersId[i]].identity.GetComponent<PlayerInformation>().SetGameInProgress(true);
         }
     }
 

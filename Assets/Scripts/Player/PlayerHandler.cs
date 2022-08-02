@@ -17,13 +17,9 @@ public class PlayerHandler : NetworkBehaviour
 
     [SyncVar(hook = nameof(IsPartyOwnerHook))]
     public bool isPartyOwner;
+    
 
-    [SyncVar(hook = nameof(IsGameInProgressHook))]
-    public bool isGameInProgress;
-
-
-
-    public List<int> _cardOnBoard = new List<int>();
+    public List<int> cardOnBoard = new List<int>();
 
 
     private LobbyUi _lobbyUi;
@@ -48,13 +44,6 @@ public class PlayerHandler : NetworkBehaviour
     {
         isPartyOwner = state;
     }
-    
-    [Server]
-    public void SetGameInProgress(bool state)
-    {
-        isGameInProgress = state;
-    }
-    
     
     [Command]
     private void CmdStartGame()
@@ -105,44 +94,6 @@ public class PlayerHandler : NetworkBehaviour
         lobby.GetLobbyUi();
     }
 
-    [Client]
-    private void GameInProgress()
-    {
-        _playerUiHandler.SpawnCanvas();
-        
-        _gameSceneBuilder.BuildGameScene();
-        
-        SetStarterValue();
-        
-    }
-
-    [Client]
-    private void SetStarterValue()
-    {
-        int countOfCardOnBoard = 12;
-        for (int i = 0; i < countOfCardOnBoard; i++)
-        {
-            _cardOnBoard.Add(i);
-        }
-        
-        for (int i = 0; i < _cardShuffle.cardsInBoard.Count; i++)
-        {
-            _cardOnBoard[i] = _cardShuffle.cardsInBoard[i];
-        }
-        
-        _gameSceneBuilder.SetStarterDeck(_cardOnBoard);
-    }
-
-    [Client]
-    private void UpdateBoard()
-    {
-        for (int i = 0; i < _cardShuffle.cardsInBoard.Count; i++)
-        {
-            _cardOnBoard[i] = _cardShuffle.cardsInBoard[i];
-        }
-        
-        _gameSceneBuilder.SetStarterDeck(_cardOnBoard);
-    }
     
     #endregion
     
@@ -156,15 +107,7 @@ public class PlayerHandler : NetworkBehaviour
         _lobbyUi.startButton.gameObject.SetActive(newValue);
     }
 
-    private void IsGameInProgressHook(bool oldValue, bool newValue)
-    {
-        if (!isLocalPlayer){ return;}
-        
-        _cardShuffle = FindObjectOfType<CardShuffle>();
-
-        //GameInProgress();
-    }
-
+    
     #endregion
     
 }
