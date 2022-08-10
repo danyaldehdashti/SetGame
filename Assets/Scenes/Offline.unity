@@ -362,9 +362,11 @@ MonoBehaviour:
   spawnPrefabs:
   - {fileID: 6629326601025950438, guid: ddfd18bfaff7a92409fb8ce75d2859e1, type: 3}
   - {fileID: 7339472548532882964, guid: 86246e775269f4a47b0268b1c7a734b4, type: 3}
+  - {fileID: 3594287349146384859, guid: f4fbe6399f211844ea507aa222d702c4, type: 3}
   playersId: 
   lobbyPrefab: {fileID: 4688928531484401598, guid: ddfd18bfaff7a92409fb8ce75d2859e1, type: 3}
   cardShufflePrefab: {fileID: 3705559142601483995, guid: 86246e775269f4a47b0268b1c7a734b4, type: 3}
+  gameManagerPrefab: {fileID: 3866484874231909147, guid: f4fbe6399f211844ea507aa222d702c4, type: 3}
 --- !u!114 &1906418460
 MonoBehaviour:
   m_ObjectHideFlags: 0

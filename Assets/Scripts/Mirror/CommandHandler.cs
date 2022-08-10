@@ -5,17 +5,17 @@ using UnityEngine;
 
 public class CommandHandler : NetworkBehaviour
 {
-    public SyncList<GameCommand> gameCommands = new SyncList<GameCommand>();
+    private SyncList<GameCommand> gameCommands = new SyncList<GameCommand>();
 
     public int indexGameCommand;
 
 
-    public override void OnStartServer()
+    public override void OnStartClient()
     {
-        base.OnStartServer();
+        base.OnStartClient();
 
         gameCommands.Callback += HandleGameCommand;
-        
+
         for (int index = 0; index < gameCommands.Count; index++)
             HandleGameCommand(SyncList<GameCommand>.Operation.OP_ADD, index, new GameCommand(), gameCommands[index]);
     }
@@ -26,8 +26,6 @@ public class CommandHandler : NetworkBehaviour
         {
             case SyncList<GameCommand>.Operation.OP_ADD:
                 UpdateBoard(newitem);
-                
-                Debug.Log(indexGameCommand);
                 break;
         }
     }
@@ -36,31 +34,13 @@ public class CommandHandler : NetworkBehaviour
     {
         if (command.whatTypeCommand == GameCommand.WhatType.Init)
         {
-            Dictionary<int, NetworkConnection> players =
-                new Dictionary<int, NetworkConnection>(((SetNetworkManager)NetworkManager.singleton)
-                    .inGameIdToNetworkConnections);
-
-            Debug.Log("In Handler" + command.cardOnBoardStart);
-
-            foreach (var net in players)
-            {
-                net.Value.identity.GetComponent<CommandInterpreter>().RpcSetStarterBoard(command.cardOnBoardStart);
-            }
+            NetworkClient.connection.identity.GetComponent<CommandInterpreter>().SetStarterBoard(command);
+            
         }
         else if (command.whatTypeCommand == GameCommand.WhatType.Update)
         {
-            Dictionary<int, NetworkConnection> players =
-                new Dictionary<int, NetworkConnection>(((SetNetworkManager)NetworkManager.singleton)
-                    .inGameIdToNetworkConnections);
-
-            Debug.Log("In Handler" + command.cardOnBoardStart);
-
-            foreach (var net in players)
-            {
-                net.Value.identity.GetComponent<CommandInterpreter>().RpcGetNewAndOldCard(command);
-            }
+            NetworkClient.connection.identity.GetComponent<CommandInterpreter>().GetNewAndOldCard(command);
         }
-        
     }
 
     public void AddNewCommand(GameCommand command)

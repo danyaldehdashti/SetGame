@@ -9,7 +9,7 @@ public class CardShuffle : NetworkBehaviour
     
     private readonly int _numberOfCardOnBoard = 12;
 
-    private List<int> _allCardsId = new List<int>();
+    public List<int> allCardsId = new List<int>();
 
     public List<int> cardsInBoard = new List<int>();
 
@@ -18,16 +18,16 @@ public class CardShuffle : NetworkBehaviour
     {
         for (int i = 0; i < _numberAllCard; i++)
         {
-            _allCardsId.Add(i);
+            allCardsId.Add(i);
         }
         
         for (int i = 0; i < _numberOfCardOnBoard; i++)
         {
-            int randomCard = Random.Range(0, _allCardsId.Count);
+            int randomCard = Random.Range(0, allCardsId.Count);
             
-            cardsInBoard.Add(_allCardsId[randomCard]);
+            cardsInBoard.Add(allCardsId[randomCard]);
             
-            _allCardsId.RemoveAt(randomCard);
+            allCardsId.RemoveAt(randomCard);
         }
     }
 
@@ -42,15 +42,15 @@ public class CardShuffle : NetworkBehaviour
 
         for (int i = 0; i < 3; i++)
         {
-            int randomCard = Random.Range(0, _allCardsId.Count);
+            int randomCard = Random.Range(0, allCardsId.Count);
             
-            cardsInBoard.Add(_allCardsId[randomCard]);
+            cardsInBoard.Add(allCardsId[randomCard]);
             
-            _allCardsId.RemoveAt(randomCard);
-
-            newItems.Add(_allCardsId[randomCard]);
+            newItems.Add(allCardsId[randomCard]);
+            
+            allCardsId.RemoveAt(randomCard);
         }
-
+        
         return newItems;
     }
 }

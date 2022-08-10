@@ -85,8 +85,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  numberOfBullet: 0
+  numberOfBullet: 6
+  timer: 10
   isGameInProgress: 0
+  timerTime: 10
+  isPartyOwner: 0
 --- !u!114 &3952197163720721528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99,7 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3009be6f1d9c2148995d7db9ce628ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCanvas: {fileID: 1885488911098902609, guid: 25630ac4db274bd4db8b352efabc5885, type: 3}
+  playerCanvasPrefab: {fileID: 1885488911098902609, guid: 25630ac4db274bd4db8b352efabc5885, type: 3}
 --- !u!114 &1274971184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,5 +218,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7f964fcba039ac4cb98444cde784570, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1

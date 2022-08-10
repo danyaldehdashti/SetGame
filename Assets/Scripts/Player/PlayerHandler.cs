@@ -28,8 +28,8 @@ public class PlayerHandler : NetworkBehaviour
 
     private GameSceneBuilder _gameSceneBuilder;
 
-    private CardShuffle _cardShuffle;
-    
+    private PlayerInformation _playerInformation;
+        
 
     #region Server
 
@@ -44,6 +44,8 @@ public class PlayerHandler : NetworkBehaviour
     {
         isPartyOwner = state;
     }
+    
+    
     
     [Command]
     private void CmdStartGame()
@@ -79,7 +81,8 @@ public class PlayerHandler : NetworkBehaviour
         _playerUiHandler = GetComponent<PlayerUiHandler>();
 
         _gameSceneBuilder = FindObjectOfType<GameSceneBuilder>();
-        
+
+        _playerInformation = FindObjectOfType<PlayerInformation>();
     }
     
     [Client]
@@ -90,8 +93,6 @@ public class PlayerHandler : NetworkBehaviour
         _lobbyUi = lobbyUiInstance.GetComponent<LobbyUi>();
 
         Lobby lobby = FindObjectOfType<Lobby>();
-        
-        lobby.GetLobbyUi();
     }
 
     
@@ -105,6 +106,7 @@ public class PlayerHandler : NetworkBehaviour
         if (!isLocalPlayer){ return;}
 
         _lobbyUi.startButton.gameObject.SetActive(newValue);
+        _playerInformation.isPartyOwner = newValue;
     }
 
     

@@ -6,7 +6,7 @@ public class CheckCards : MonoBehaviour
 {
     [Header("Dependency")]
     
-    [SerializeField] private List<Card> cards;
+    [SerializeField] private List<Card> allCards;
 
 
     #region PickUpVariables
@@ -46,7 +46,7 @@ public class CheckCards : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             //Color
-            switch (cards[cardsSelectedByThePlayer[i]].color)
+            switch (allCards[cardsSelectedByThePlayer[i]].color)
             {
                 case ColorEnum.Blue:
                     colorBlue++;
@@ -61,7 +61,7 @@ public class CheckCards : MonoBehaviour
                     break;
             }
             //Number
-            switch (cards[cardsSelectedByThePlayer[i]].number)
+            switch (allCards[cardsSelectedByThePlayer[i]].number)
             {
                 case NumberEnum.One:
                     numberOne++;
@@ -76,7 +76,7 @@ public class CheckCards : MonoBehaviour
                     break;
             }
             //Model
-            switch (cards[cardsSelectedByThePlayer[i]].model)
+            switch (allCards[cardsSelectedByThePlayer[i]].model)
             {
                 case ModelEnum.Empty:
                     emptyModel++;
@@ -91,7 +91,7 @@ public class CheckCards : MonoBehaviour
                     break;
             }
             //GeometricShapes
-            switch (cards[cardsSelectedByThePlayer[i]].geometricShapes)
+            switch (allCards[cardsSelectedByThePlayer[i]].geometricShapes)
             {
                 case GeometricShapesEnum.Circle:
                     geometricShapesCircle++;

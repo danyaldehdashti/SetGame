@@ -5,12 +5,7 @@ using Mirror;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerData
-{
-    public int inGameId = 0;
-    public string name = "";
-    public int avatarCode;
-}
+
 
 public class Lobby : NetworkBehaviour
 {
@@ -21,9 +16,7 @@ public class Lobby : NetworkBehaviour
     public SyncList<PlayerData> players = new SyncList<PlayerData>();
     
     private LobbyUi _lobbyUi;
-
-
-
+    
     public override void OnStartClient()
     {
         base.OnStartClient();
@@ -47,19 +40,29 @@ public class Lobby : NetworkBehaviour
                 break;
         }
     }
+    
 
-    public void GetLobbyUi()
+    public void RemovePlayer( int id)
     {
-        _lobbyUi = FindObjectOfType<LobbyUi>();
+        for (int i = 0; i < players.Count; i++)
+        {
+            if (players[i].inGameId == id)
+            {
+                players.RemoveAt(i);
+            }
+        }
     }
 
     private void UpdateLobby()
     {
+        _lobbyUi = FindObjectOfType<LobbyUi>();
+
         if (_lobbyUi == null)
         {
-            StartCoroutine(GetLobbyUiIEnumerator());
+            Invoke(nameof(UpdateLobby) , 1);
+            return;
         }
-
+        
         for (int i = 0; i < _lobbyUi.players.Count; i++)
         {
             _lobbyUi.players[i].SetActive(false);
@@ -69,11 +72,5 @@ public class Lobby : NetworkBehaviour
         {
             _lobbyUi.players[i].SetActive(true);
         }
-    }
-
-    IEnumerator GetLobbyUiIEnumerator()
-    {
-        yield return new WaitForSeconds(waitTime);
-        UpdateLobby();
     }
 }

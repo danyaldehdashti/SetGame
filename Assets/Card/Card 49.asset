@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Card 49
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: f3736e7a3612b9c4180d9ef0a3caa780, type: 3}
+  selectedSprite: {fileID: 21300000, guid: cfe4fddae131e824d9da57cc4cb05b87, type: 3}
   color: 0
   geometricShapes: 2
   number: 2

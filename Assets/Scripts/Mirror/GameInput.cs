@@ -19,7 +19,7 @@ public class GameInput : NetworkBehaviour
     {
         _checkCards = GetComponent<CheckCards>();
     }
-
+    
 
     public void GetCommandForInit(GameCommand newCommandFromPlayer)
     {
@@ -27,8 +27,6 @@ public class GameInput : NetworkBehaviour
         _commandHandler = FindObjectOfType<CommandHandler>();
 
         CheckCommand(newCommandFromPlayer);
-
-        _commandHandler.indexGameCommand++;
     }
 
     public void GetCommandForUpdate(List<int> cardsId,List<int> spawnPoints,int playerId)
@@ -56,6 +54,8 @@ public class GameInput : NetworkBehaviour
             _isBuildStarterDeck = true;
 
             newCommand.cardOnBoardStart = _cardShuffle.cardsInBoard;
+
+            newCommand.countOfAllCard = _cardShuffle.allCardsId.Count;
             
             _commandHandler.AddNewCommand(newCommand);
             
@@ -67,13 +67,20 @@ public class GameInput : NetworkBehaviour
             if (_checkCards.PickUpConditions(newCommand.playerCardChose))
             {
                 newCommand.newCards = _cardShuffle.RemoveAndAddItem(newCommand.playerCardChose);
+
+                newCommand.countOfAllCard = _cardShuffle.allCardsId.Count;
                 
                 _commandHandler.AddNewCommand(newCommand);
+                _commandHandler.indexGameCommand++;
             }
             else
             {
-                Debug.Log("KIR");
+                Debug.Log("Not Set");
             }
         }
+
+        GameManager gameManager = FindObjectOfType<GameManager>();
+        
+        gameManager.DelayToConvertNetworkConnectionToPlayerData();
     }
 }

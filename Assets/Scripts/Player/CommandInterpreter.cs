@@ -3,35 +3,54 @@ using System.Collections.Generic;
 using Mirror;
 using UnityEngine;
 
-public class CommandInterpreter : NetworkBehaviour
+public class CommandInterpreter : MonoBehaviour
 {
     private GameSceneBuilder _gameSceneBuilder;
-    
-    private List<int> _cardIOnBoard;
 
+    private CardDeck _cardDeck;
 
-    #region Server
+    private PlayerInformation _playerInformation;
 
-    [ClientRpc]
-    public void RpcSetStarterBoard(List<int> cardsId)
+    private PlayerHandler _playerHandler;
+
+    public void SetStarterBoard(GameCommand command)
     {
         _gameSceneBuilder = GetComponent<GameSceneBuilder>();
         
-        _gameSceneBuilder.SetStarterDeck(cardsId);
+        _gameSceneBuilder.SetStarterDeck(command.cardOnBoardStart);
+        
+        
+        SetCardDeck(command);
     }
 
-    [ClientRpc]
-    public void RpcGetNewAndOldCard(GameCommand command) 
+    public void GetNewAndOldCard(GameCommand command) 
     {
         _gameSceneBuilder = GetComponent<GameSceneBuilder>();
         
         _gameSceneBuilder.RemoveAndSetNewItem(command);
+        
+        
+        SetCardDeck(command);
+        CheckCommand(command);
     }
 
-    #endregion
+    private void SetCardDeck(GameCommand command)
+    {
+        _cardDeck = FindObjectOfType<CardDeck>();
+        
+        _cardDeck.SetNumberOfDeckCard(command.countOfAllCard);
+    }
 
-    #region Client
-    
+    private void CheckCommand(GameCommand command)
+    {
+        _playerHandler = GetComponent<PlayerHandler>();
+        _playerInformation = GetComponent<PlayerInformation>();
 
-    #endregion
+        _playerInformation.DeSelectedCards();
+        
+        if (command.playerId == _playerHandler.inGameId)
+        {
+            _playerInformation.AddScore();
+        }
+    }
 }

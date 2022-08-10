@@ -19,5 +19,7 @@ public class GameCommand
 
     public List<int> spawnPointsPlayerCardChose = new List<int>();
 
+    public int countOfAllCard;
+
     public int playerId = 0;
 }

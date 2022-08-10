@@ -9,7 +9,7 @@ public class SetNetworkManager : NetworkManager
     
     public List<int> playersId = new List<int>();
 
-    public Dictionary<int, NetworkConnection> inGameIdToNetworkConnections = new Dictionary<int, NetworkConnection>();
+    public readonly Dictionary<int, NetworkConnection> inGameIdToNetworkConnections = new Dictionary<int, NetworkConnection>();
     
 
     private Lobby _lobby;
@@ -22,14 +22,14 @@ public class SetNetworkManager : NetworkManager
     
     private string _gameScene = "Game";
     
-    private bool _isGameInProgress = false;
-    
 
     
     [SerializeField] private Lobby lobbyPrefab;
 
     [SerializeField] private CardShuffle cardShufflePrefab;
-    
+
+    [SerializeField] private GameManager gameManagerPrefab;
+     
 
     public override void OnServerAddPlayer(NetworkConnection conn)
     {
@@ -46,12 +46,8 @@ public class SetNetworkManager : NetworkManager
 
         inGameIdToNetworkConnections.Remove(playerHandler.inGameId);
 
-        PlayerData playerData = new PlayerData();
-
-        playerData.inGameId = playerHandler.inGameId;
-        
-        _lobby.players.Remove(playerData);
-        
+        _lobby.RemovePlayer(playerHandler.inGameId);
+            
         base.OnServerDisconnect(conn);
     }
 
@@ -66,19 +62,19 @@ public class SetNetworkManager : NetworkManager
         else if(SceneManager.GetActiveScene().name.StartsWith(_gameScene))
         {
             SpawnCardShuffle();
+            SpawnGameManager();
         }
     }
     
     public void StartGame()
     {
-        _isGameInProgress = true;
-        
         ServerChangeScene(_gameScene);
         
         for (int i = 0; i < inGameIdToNetworkConnections.Count; i++)
         {
             inGameIdToNetworkConnections[playersId[i]].identity.GetComponent<PlayerInformation>().SetGameInProgress(true);
         }
+        
     }
 
     private void AddNewPlayer(NetworkConnection connection)
@@ -126,6 +122,13 @@ public class SetNetworkManager : NetworkManager
         _cardShuffle = cardShuffleInstance.GetComponent<CardShuffle>();
         
         NetworkServer.Spawn(cardShuffleInstance);
+    }
+    
+    private void SpawnGameManager()
+    {
+        GameObject gameManagerInstance = Instantiate(gameManagerPrefab.gameObject);
+        
+        NetworkServer.Spawn(gameManagerInstance);
     }
     
 }

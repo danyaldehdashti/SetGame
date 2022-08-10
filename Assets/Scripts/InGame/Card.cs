@@ -33,6 +33,7 @@ public enum ModelEnum
 public class Card : ScriptableObject
 {
     public Sprite sprite;
+    public Sprite selectedSprite; 
     public ColorEnum color;
     public GeometricShapesEnum geometricShapes;
     public NumberEnum number;

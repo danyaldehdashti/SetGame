@@ -98,9 +98,22 @@ public class GameSceneBuilder : MonoBehaviour
 
         _isMove = true;
         
-        Invoke(nameof(OnEnableAnimations),3f);
+        Invoke(nameof(OnEnableAnimations),0.5f);
     }
 
+    public void DeSelectedCardInPlayerInformation()
+    {
+        Invoke(nameof(DeSelectedCard),0.1f);
+    }
+
+    private void DeSelectedCard()
+    {
+        for (int i = 0; i < cardsInBoard.Count; i++)
+        {
+            cardsInBoard[i].spriteRenderer.gameObject.SetActive(false);
+        }
+    }
+    
     private void SetNewCard(GameCommand command)
     {
         List<GameObject> removedCards = new List<GameObject>();
@@ -140,6 +153,7 @@ public class GameSceneBuilder : MonoBehaviour
         {
             cardsInBoard[i].spawnPointIndex = i;
         }
+
         _removedCard = removedCards;
         _newCards = newCards;
         _newSpawnPoint = command.spawnPointsPlayerCardChose;
@@ -162,7 +176,7 @@ public class GameSceneBuilder : MonoBehaviour
             newCards[i].transform.position = newPos;
         }
     }
-    
+
     private void Update()
     {
         if (_isMove)
@@ -174,6 +188,11 @@ public class GameSceneBuilder : MonoBehaviour
     private void OnEnableAnimations()
     {
         _isMove = false;
+        
+        for (int i = 0; i < _removedCard.Count; i++)
+        {
+            Destroy(_removedCard[i].gameObject);
+        }
         
         Debug.Log("Fuck");
     }
