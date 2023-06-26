@@ -47,7 +47,7 @@ public class PlayerInformation : NetworkBehaviour
     }
 
     [Command]
-    private void CmdTimerActive()
+    private void TimerActive()
     {
         timer -= Time.deltaTime;
         
@@ -103,6 +103,7 @@ public class PlayerInformation : NetworkBehaviour
 
         _playerUiHandler = GetComponent<PlayerUiHandler>();
         _gameSceneBuilder = GetComponent<GameSceneBuilder>();
+        _playerHandler = GetComponent<PlayerHandler>();
     }
 
     [TargetRpc]
@@ -139,12 +140,10 @@ public class PlayerInformation : NetworkBehaviour
     [Client]
     private void ChoseThreeCard()
     {
-        _playerHandler = GetComponent<PlayerHandler>();
         CmdCardChoseDone(_cardChose,_spawnPoints,_playerHandler.inGameId);
-        
-        DeSelectedCards();
-        
         CmdUseBullet();
+
+        DeSelectedCards();
     }
 
     [Client]
@@ -167,7 +166,7 @@ public class PlayerInformation : NetworkBehaviour
     {
         if (numberOfBullet < 6)
         {
-            CmdTimerActive();
+            TimerActive();
         }
     }
 
